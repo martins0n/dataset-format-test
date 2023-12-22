@@ -67,6 +67,8 @@ if __name__ == '__main__':
     
     create_index_file(jsonl_file_path, index_file_path)
     
+    sample_stats = {}
+    
     list_times = []
     
     reader = RandomBatchReader(jsonl_file_path, index_file_path)
@@ -88,9 +90,14 @@ if __name__ == '__main__':
     
     start_time = time.time()
     
+    sample_stats['max'] = max(list_times)
+    sample_stats['min'] = min(list_times)
+    sample_stats['avg'] = sum(list_times) / len(list_times)
+    sample_stats['test_case'] = __file__.split('.')[0]
+    
     print('>>>')
     print('>>>')
-
+    
     for batch in reader.read_batch(batch_size):
         pass
     print(f'RAM usage: {ram_usage()}')
@@ -99,5 +106,15 @@ if __name__ == '__main__':
     
     print(f'Time: {end_time - start_time}')
     
+    sample_stats['iter_time'] = end_time - start_time
+    sample_stats['ram_usage'] = ram_usage()
+    sample_stats['data_size'] = data_size() / 1024
+    sample_stats['iter_speed'] = data_size() / 1024 / (end_time - start_time)
+    
     # GB per second
     print(f'GB per second: {data_size() / 1024 / (end_time - start_time)}')
+    
+    with open('sample_stats.json', 'a') as file:
+        import json
+        file.write(json.dumps(sample_stats))
+        file.write('\n')

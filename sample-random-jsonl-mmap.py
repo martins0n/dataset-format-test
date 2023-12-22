@@ -5,6 +5,7 @@ from gen_data import ram_usage, data_size
 
 import numpy as np
 
+
 def create_index_file(jsonl_file_path, index_file_path):
     offsets = []
     with open(jsonl_file_path, 'rb') as file:
@@ -64,6 +65,8 @@ if __name__ == '__main__':
     batch_size = 100
     sample_rate = 20
     
+    sample_stats = {}
+    
     print(f'RAM usage before: {ram_usage()}')
     
     create_index_file(jsonl_file_path, index_file_path)
@@ -84,6 +87,11 @@ if __name__ == '__main__':
     print(f'Min time: {min(list_times)}')
     print(f'Max time: {max(list_times)}')
 
+    sample_stats['max'] = max(list_times)
+    sample_stats['min'] = min(list_times)
+    sample_stats['avg'] = sum(list_times) / len(list_times)
+    sample_stats['test_case'] = __file__.split('.')[0]
+    
     print('>>>')
     print('>>>')
     
@@ -95,5 +103,15 @@ if __name__ == '__main__':
     
     print(f'Time: {end_time - start_time}')
     
+    sample_stats['iter_time'] = end_time - start_time
+    sample_stats['ram_usage'] = ram_usage()
+    sample_stats['data_size'] = data_size() / 1024
+    sample_stats['iter_speed'] = data_size() / 1024 / (end_time - start_time)
+    
     # GB per second
     print(f'GB per second: {data_size() / 1024 / (end_time - start_time)}')
+    
+    with open('sample_stats.json', 'a') as file:
+        import json
+        file.write(json.dumps(sample_stats))
+        file.write('\n')

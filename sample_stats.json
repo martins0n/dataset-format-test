@@ -1,0 +1,2 @@
+{"max": 0.015801191329956055, "min": 0.010424137115478516, "avg": 0.012345623970031739, "test_case": "/Users/marti/Projects/dataset-bench/sample-random-jsonl-mmap", "iter_time": 33.503718852996826, "ram_usage": 8109.828125, "data_size": 13.740750713273883, "iter_speed": 0.41012613476025533}
+{"max": 0.015421152114868164, "min": 0.008723258972167969, "avg": 0.011436593532562257, "test_case": "/Users/marti/Projects/dataset-bench/sample-random-jsonl", "iter_time": 10.60535717010498, "ram_usage": 113.546875, "data_size": 13.740750713273883, "iter_speed": 1.2956424279615153}
