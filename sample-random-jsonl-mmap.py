@@ -1,6 +1,7 @@
 import mmap
 import random
 import time
+import orjson as json
 from gen_data import ram_usage, data_size
 
 import numpy as np
@@ -45,7 +46,7 @@ class RandomBatchReader:
 
         for offset in random_offsets:
             self.mmapped_file.seek(offset)
-            line = self.mmapped_file.readline().decode('utf-8').strip()
+            line = json.loads(self.mmapped_file.readline().decode('utf-8').strip())
             batch_lines.append(line)
 
         return batch_lines
@@ -55,7 +56,7 @@ class RandomBatchReader:
             batch_lines = []
             for offset in self.offsets[i * batch_size : (i + 1) * batch_size]:
                 self.mmapped_file.seek(offset)
-                line = self.mmapped_file.readline().decode('utf-8').strip()
+                line = json.loads(self.mmapped_file.readline().decode('utf-8').strip())
                 batch_lines.append(line)
             yield batch_lines
 

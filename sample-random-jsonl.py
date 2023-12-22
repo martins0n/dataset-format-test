@@ -15,6 +15,7 @@ def create_index_file(jsonl_file_path, index_file_path):
 import numpy as np
 import random
 import time
+import orjson as json
 
 
 class RandomBatchReader:
@@ -39,7 +40,7 @@ class RandomBatchReader:
 
         for offset in random_offsets:
             self.file.seek(offset)
-            line = self.file.readline().decode('utf-8').strip()
+            line = json.loads(self.file.readline().decode('utf-8').strip())
             batch_lines.append(line)
 
         return batch_lines
@@ -49,7 +50,7 @@ class RandomBatchReader:
             batch_lines = []
             for offset in self.offsets[i * batch_size : (i + 1) * batch_size]:
                 self.file.seek(offset)
-                line = self.file.readline().decode('utf-8').strip()
+                line = json.loads(self.file.readline().decode('utf-8').strip())
                 batch_lines.append(line)
             yield batch_lines
 
